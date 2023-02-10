@@ -1,0 +1,63 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+# Define the pipeline trigger
+trigger:
+- main
+
+# Define the pipeline resources
+resources:
+  pipelines:
+  - pipeline: vsbuild
+    source: vsbuild
+
+# Define the pipeline stages
+stages:
+
+# Install NuGet
+- stage: Install
+  displayName: Install NuGet
+  jobs:
+  - job: NuGetInstaller
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - task: NuGetToolInstaller@0
+      displayName: 'Install NuGet'
+      inputs:
+        versionSpec: 5.x
+
+# Build the solution
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - task: vsBuild@1
+      displayName: 'Build solution'
+      inputs:
+        solution: '**/*.sln'
+        platform: '$(BuildPlatform)'
+        configuration: '$(BuildConfiguration)'
+
+# Deploy the solution to Azure Web App
+- stage: Deploy
+  displayName: Deploy
+  dependsOn: Build
+  jobs:
+  - job: Deploy
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - task: AzureRmWebAppDeployment@4
+      displayName: 'Deploy to Azure Web App'
+      inputs:
+        ConnectionType: AzureRM
+        azureSubscription: '<30af2682-e20c-4b1f-86a1-e91406b78f03>'
+        appType: webApp
+        WebAppName: '<blue1>'
+        Package: '$(System.DefaultWorkingDirectory)/**/*.zip'
