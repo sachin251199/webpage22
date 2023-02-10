@@ -7,8 +7,6 @@
 trigger:
 - main
 
-
-
 # Define the pipeline stages
 stages:
 
@@ -39,12 +37,11 @@ stages:
         solution: '**/*.sln'
         platform: '$(BuildPlatform)'
         configuration: '$(BuildConfiguration)'
-
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'pipeline'
-    appType: 'webApp'
-    WebAppName: 'blue1'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/*Webapp.zip'
-
+    - task: AzureRmWebAppDeployment@4
+      displayName: 'Deploy to Azure Web App'
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'pipeline'
+        appType: 'webApp'
+        WebAppName: 'blue1'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/*Webapp.zip'
