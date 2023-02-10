@@ -40,20 +40,11 @@ stages:
         platform: '$(BuildPlatform)'
         configuration: '$(BuildConfiguration)'
 
-# Deploy the solution to Azure Web App
-- stage: Deploy
-  displayName: Deploy
-  dependsOn: Build
-  jobs:
-  - job: Deploy
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-    - task: AzureRmWebAppDeployment@4
-      displayName: 'Deploy to Azure Web App'
-      inputs:
-        ConnectionType: AzureRM
-        azureSubscription: '<30af2682-e20c-4b1f-86a1-e91406b78f03>'
-        appType: webApp
-        WebAppName: '<blue1>'
-        Package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'pipeline'
+    appType: 'webApp'
+    WebAppName: 'blue1'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/*Webapp.zip'
+
