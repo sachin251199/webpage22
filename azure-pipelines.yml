@@ -34,7 +34,7 @@ stages:
     - task: vsBuild@1
       displayName: 'Build solution'
       inputs:
-        solution: 'D:\a\1\s\**\*.sln'
+        solution: '$(System.DefaultWorkingDirectory)/MySolution.sln'
         platform: '$(BuildPlatform)'
         configuration: '$(BuildConfiguration)'
     - task: AzureRmWebAppDeployment@4
