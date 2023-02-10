@@ -11,10 +11,17 @@ trigger:
 resources:
   pipelines:
   - pipeline: vsbuild
-    source: vsbuild
+    source:
+      name: vsbuild
+      trigger:
+        branches:
+          include:
+          - main
 
 # Define the pipeline stages
 stages:
+...
+
 
 # Install NuGet
 - stage: Install
