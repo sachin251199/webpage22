@@ -34,7 +34,7 @@ stages:
     - task: vsBuild@1
       displayName: 'Build solution'
       inputs:
-        solution: 'D:\new project\webpage22'
+        solution: 'D:\new project\webpage22\webapp.zip'
         platform: '$(BuildPlatform)'
         configuration: '$(BuildConfiguration)'
     - task: AzureRmWebAppDeployment@4
